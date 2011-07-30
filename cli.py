@@ -2,9 +2,6 @@ import argparse
 import xmlrpclib
 import socket
 
-HOST = 'localhost'
-PORT = '3333'
-
 def show(msg, prefix='INFO: ', exit=False):
     print '%s%s' % (prefix, msg)
     if exit:
@@ -76,14 +73,16 @@ class Domain(ConnectXMLRPC):
 
 
 parser = argparse.ArgumentParser()
-subparsers = parser.add_subparsers(help='commands')
 
-domain = Domain()
+parser.add_argument('--host', default='localhost', help='Host where XML-RPC Server is running, default "localhost"')
+parser.add_argument('--port', default='3333', help='Port of XML-RPC Server, default 3333')
+
+subparsers = parser.add_subparsers(help='commands')
 
 # Domain list parser
 domain_list_parser = subparsers.add_parser('domainlist', help='List domains')
 domain_list_parser.add_argument('--limit', default=False, help='Limit the output of domains')
-domain_list_parser.set_defaults(func=domain.list)
+domain_list_parser.set_defaults(cls='domain', method='list')
 
 # Domain list parser
 domain_create_parser = subparsers.add_parser('domaincreate', help='Create domain')
@@ -97,12 +96,18 @@ domain_create_parser.add_argument('--soa-expire-time', dest='soa_expire', defaul
 domain_create_parser.add_argument('--soa-minimum-ttl', dest='soa_minimum', default=None, help='SOA minimum TTL')
 domain_create_parser.add_argument('--group', dest='group_id', default=None, help='Domain group')
 domain_create_parser.add_argument('--linked-to', dest='domain_linked_id', default=None, help='Domain link')
-domain_create_parser.set_defaults(func=domain.create)
+domain_create_parser.set_defaults(cls='domain', method='create')
 
 
-#import pdb; pdb.set_trace()
+# Getting the args.
 args = parser.parse_args()
-kwargs = dict([x for x in args._get_kwargs() if x[0] != 'func'])
-print kwargs
-args.func(**kwargs)
+# Removing the configuration args.
+kwargs = dict([x for x in args._get_kwargs() if x[0] not in ('cls', 'method', 'host', 'port')])
+
+if args.cls == 'domain':
+    domain = Domain(args.host, args.port)
+    method = getattr(domain, args.method)
+    method(**kwargs)
+else:
+    print 'ERROR, the args: %s' % args
 
