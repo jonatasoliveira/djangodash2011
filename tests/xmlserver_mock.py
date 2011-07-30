@@ -71,6 +71,16 @@ class DomainWrapper(object):
         self.domains.append(new_domain)
         return True
 
+    def delete(self, domain):
+        for d in self.domains:
+            if d['domain'] == domain:
+                break
+        else:
+            return [('message', 'The domain was not founded.'), ('type', 'error')]
+
+        self.domains.remove(d)
+        return True
+
 
 class ServerDNSConfig:
     """
