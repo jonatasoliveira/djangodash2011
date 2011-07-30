@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 import argparse
 import xmlrpclib
 import socket
+
 
 def show(msg, prefix='INFO: ', exit=False):
     print '%s%s' % (prefix, msg)
@@ -13,6 +15,7 @@ def show_error(msg, exit=False):
 
 def show_message(msg, exit=False):
     show(msg, 'MESSAGE: ', exit)
+
 
 class ConnectXMLRPC(object):
     def __init__(self, host=None, port=None):
@@ -93,7 +96,7 @@ class Domain(ConnectXMLRPC):
         @param domain_linked_id
         """
         try:
-            params = self._kwargs_to_args_ordenated(**kwargs))
+            params = self._kwargs_to_args_ordenated(**kwargs)
             result = self.client.domain.update(*params)
         except socket.error, msg:
             show_error(msg, exit=True)
@@ -102,8 +105,24 @@ class Domain(ConnectXMLRPC):
             msg = 'SUCCESS! The domain %s was updated.' % kwargs['domain']
             show_message(msg, exit=True)
     
-    def delete(self, args):
-        print '>>> DELETE: %s' % args
+    def delete(self, *args, **kwargs):
+        """
+        Delete a domain.
+
+        @param domain
+        """
+        try:
+            result = self.client.domain.delete(kwargs['domain'])
+        except socket.error, msg:
+            show_error(msg, exit=True)
+
+        if result == True:
+            msg = 'SUCCESS! The domsin %s was deleted.' % kwargs['domain']
+            show_message(msg, exit=True)
+        else:
+            msg = 'There was a problem while executing the request: %s' % result['message']
+            show_error(msg, exit=True)
+
 
 
 parser = argparse.ArgumentParser()
@@ -133,18 +152,23 @@ domain_create_parser.add_argument('--linked-to', dest='domain_linked_id', defaul
 domain_create_parser.set_defaults(cls='domain', method='create')
 
 # Domain update parser
-domain_create_parser = subparsers.add_parser('domainupdate', help='Update domain')
-domain_create_parser.add_argument('domain', help='Domain name')
-domain_create_parser.add_argument('--active', dest='domain_active', default=None, help='Active domain?')
-domain_create_parser.add_argument('--soa-ttl', dest='soa_ttl', default=None, help='SOA TTL')
-domain_create_parser.add_argument('--soa-serial', dest='soa_serial', default=None, help='SOA serial')
-domain_create_parser.add_argument('--soa-refresh-time', dest='soa_refresh_seconds', default=None, help='SOA refresh time')
-domain_create_parser.add_argument('--soa-retry-time', dest='soa_retry', default=None, help='SOA retry time')
-domain_create_parser.add_argument('--soa-expire-time', dest='soa_expire', default=None, help='SOA expire time')
-domain_create_parser.add_argument('--soa-minimum-ttl', dest='soa_minimum', default=None, help='SOA minimum TTL')
-domain_create_parser.add_argument('--group', dest='group_id', default=None, help='Domain group')
-domain_create_parser.add_argument('--linked-to', dest='domain_linked_id', default=None, help='Domain link')
-domain_create_parser.set_defaults(cls='domain', method='update')
+domain_update_parser = subparsers.add_parser('domainupdate', help='Update domain')
+domain_update_parser.add_argument('domain', help='Domain name')
+domain_update_parser.add_argument('--active', dest='domain_active', default=None, help='Active domain?')
+domain_update_parser.add_argument('--soa-ttl', dest='soa_ttl', default=None, help='SOA TTL')
+domain_update_parser.add_argument('--soa-serial', dest='soa_serial', default=None, help='SOA serial')
+domain_update_parser.add_argument('--soa-refresh-time', dest='soa_refresh_seconds', default=None, help='SOA refresh time')
+domain_update_parser.add_argument('--soa-retry-time', dest='soa_retry', default=None, help='SOA retry time')
+domain_update_parser.add_argument('--soa-expire-time', dest='soa_expire', default=None, help='SOA expire time')
+domain_update_parser.add_argument('--soa-minimum-ttl', dest='soa_minimum', default=None, help='SOA minimum TTL')
+domain_update_parser.add_argument('--group', dest='group_id', default=None, help='Domain group')
+domain_update_parser.add_argument('--linked-to', dest='domain_linked_id', default=None, help='Domain link')
+domain_update_parser.set_defaults(cls='domain', method='update')
+
+# Domain delete parser
+domain_delete_parser = subparsers.add_parser('domaindelete', help='Delete domain')
+domain_delete_parser.add_argument('domain', help='Domain name')
+domain_delete_parser.set_defaults(cls='domain', method='delete')
 
 # Getting the args.
 args = parser.parse_args()
