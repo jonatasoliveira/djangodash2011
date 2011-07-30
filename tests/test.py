@@ -11,7 +11,7 @@ class TestDomain(unittest.TestCase):
         pass
 
     def test_ok(self):
-        domains = self.client.list()
+        domains = self.client.domain.list()
         self.assertEqual(len(domains), 10)
 
 
