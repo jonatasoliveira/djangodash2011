@@ -55,6 +55,11 @@ def create_db_file(engine,dir_db_files,v_domain):
     records_table = pyManDNS_Tables.records_table()
     records_result = engine.execute(records_table.select().where("domain_id=:domain_id").order_by("record_type,record_name"),domain_id=domain_row.domain_id)
 
+    if domain_row.domain_linked_id:
+
+        records_result = engine.execute(
+            records_table.select().where("domain_id=:domain_id").order_by("record_type,record_name"),domain_id=domain_row.domain_linked_id)
+
     for record_row in records_result:
 
         if record_row.record_type == "NS":
@@ -67,7 +72,7 @@ def create_db_file(engine,dir_db_files,v_domain):
             zone_type_A += "%s\tIN\tA\t\t%s\n" % (record_row.record_name,record_row.record_value)
 
         if record_row.record_type == "CNAME":
-            zone_type_CNAME += "%s\tIN\tCNAME\t\t%s\n" % (record_row.record_name,record_row.record_value)
+            zone_type_CNAME += "%s\tIN\tCNAME\t\t%s.\n" % (record_row.record_name,record_row.record_value)
 
         if record_row.record_type == "TXT":
 
