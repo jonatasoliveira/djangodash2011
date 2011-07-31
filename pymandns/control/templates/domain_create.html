@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Create new domain</h1>
+
+    <p>To create a new domain, please fill the form.</p>
+
+    <form action="{% url domain_create %}" method="post">
+        {% csrf_token %}
+        {{ domain_form.as_p }}
+        <p>
+            <input type="submit" class="submit" value="Create" />
+        </p>
+    </form>
+
+{% endblock %}
