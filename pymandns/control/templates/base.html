@@ -4,9 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-    <title>untitled</title>
-    
+    <title>PyManDNS</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.0/dojo/dojo.xd.js" type="text/javascript"></script>
     {% block headtags %}{% endblock %}
 </head>
 
@@ -14,6 +13,10 @@
     <div id="site">
         <div id="header">
             <h1>PyManDNS</h1>
+            <ul id="menu">
+                <li><a href="{% url domain_list %}">List domains</a></li>
+                <li><a href="{% url domain_create %}">Create domain</a></li>
+            </ul>
         </div>
         <div id="content">
             {% for message in messages %}

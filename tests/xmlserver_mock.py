@@ -81,6 +81,11 @@ class DomainWrapper(object):
         self.domains.remove(d)
         return True
 
+    def get(self, domain):
+        for d in self.domains:
+            if d['domain'] == domain:
+                return d
+
 
 class ServerDNSConfig:
     """

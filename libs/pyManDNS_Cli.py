@@ -1,18 +1,24 @@
+# -*- coding: utf-8 -*-
+
+import xmlrpclib
+import socket
+
+
 class ConnectXMLRPC(object):
 
-    def __init__(self, host=None, port=None):
-        self.host = host if host else HOST
-        self.port = port if port else PORT
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
         self._connect()
 
     def _connect(self):
         try:
             self.client = xmlrpclib.ServerProxy('http://%s:%s' % (self.host, self.port), allow_none=True)
         except Exception, msg:
-            show_error(msg, exit=True)
+            return dict(type='error', message=msg)
+
 
 class pyManDNS_Cli_Domain(ConnectXMLRPC):
-
     def _kwargs_to_args_ordenated(self, **kwargs):
         # The XML-RPC doesn't accept named params. The keys are
         # to ordenate the params and use as **params.
@@ -21,7 +27,6 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
                 'soa_minimum', 'group_id', 'domain_linked', 'domain_copy']
 
         return [kwargs[k] for k in keys if k in kwargs]
-
 
     def show(self, **kwargs):
         """
@@ -32,9 +37,9 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
 
         try:
             result = self.client.domain.show(kwargs["domain"])
-            print result
+            return dict(type='success', message='', result=result)
         except socket.error, msg:
-            show_error(msg, exit=True)
+            return dict(type='error', message=msg)
 
     def delete(self, **kwargs):
         """
@@ -45,10 +50,9 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
 
         try:
             result = self.client.domain.delete(kwargs["domain"])
-            print result
+            return dict(type='success', message='', result=result)
         except socket.error, msg:
-            show_error(msg, exit=True)
-
+            return dict(type='error', message=msg)
 
     def list(self, limit=False):
         """
@@ -57,15 +61,23 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         try:
             domains = self.client.domain.list()
         except socket.error, msg:
-            show_error(msg, exit=True)
+            return dict(type='error', message=msg)
 
         if limit:
             domains = domains[:limit]
 
-        print 'Domain list (total: %d)' % len(domains)
-        for domain in domains:
-            print '- %s' % domain['domain']
+        return dict(type='success', message='', result=domains)
 
+    def get(self, domain):
+        """
+        Get one domain, with all details,
+        """
+        try:
+            result = self.client.domain.get(domain=domain)
+        except socket.error, msg:
+            return dict(type='error', message=msg)
+
+        return dict(type='success', message='', result=domain)
 
     def create(self, *args, **kwargs):
         """
@@ -86,13 +98,9 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         try:
             params = self._kwargs_to_args_ordenated(**kwargs)
             result = self.client.domain.create(*params)
-            print result
+            return dict(type='success', message='', result=result)
         except socket.error, msg:
-            show_error(msg, exit=True)
-
-        #if result == True:
-        #    msg = 'SUCCESS! The domain %s was created.' % kwargs['domain']
-        #    show_message(msg, exit=True)
+            return dict(type='error', message=msg)
 
     def update(self, *args, **kwargs):
         """
@@ -113,6 +121,8 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         try:
             params = self._kwargs_to_args_ordenated(**kwargs)
             result = self.client.domain.update(*params)
-            print result
+            return dict(type='success', message='', result=result)
         except socket.error, msg:
-            show_error(msg, exit=True)
+            return dict(type='error', message=msg)
+
+

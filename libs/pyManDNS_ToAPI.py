@@ -22,6 +22,18 @@ class DomainWrapper(object):
         
         return msg
 
+    ''' Get dominio '''
+    def get(self,v_domain):
+
+        domains_table = self.pyTables.domains_table()
+        records_table = self.pyTables.records_table()
+
+        domains_result = self.engine.execute(
+            domains_table.select().where("domain=:domain"),domain=v_domain)
+        domain_row = domains_result.first()
+
+        return domain_row
+
     ''' Delete dominio '''
     def delete(self,v_domain):
 

@@ -3,7 +3,7 @@
 from django import forms
 
 class DomainForm(forms.Form):
-    domain = forms.URLField(label=u'Domain name', max_length=200)
+    domain = forms.CharField(label=u'Domain name', max_length=200)
     domain_active = forms.BooleanField(label=u'Domain active?', initial=True, required=False)
     soa_ttl = forms.IntegerField(label=u'TTL')
     soa_serial = forms.IntegerField(label=u'Serial')
