@@ -19,6 +19,7 @@ class ConnectXMLRPC(object):
 
 
 class pyManDNS_Cli_Domain(ConnectXMLRPC):
+
     def _kwargs_to_args_ordenated(self, **kwargs):
         # The XML-RPC doesn't accept named params. The keys are
         # to ordenate the params and use as **params.

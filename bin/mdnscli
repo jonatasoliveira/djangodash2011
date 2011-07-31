@@ -67,7 +67,19 @@ kwargs = dict([x for x in args._get_kwargs() if x[0] not in ('cls', 'method', 'h
 if args.cls == 'domain':
     domain = pyManDNS_Cli_Domain(args.host, args.port)
     method = getattr(domain, args.method)
-    print method(**kwargs)
+    result = method(**kwargs)
+
+    if args.method == "list":
+        
+        for i in result["result"]:
+            print i["domain"]
+
+    else:
+        print result["message"]
+        
+        if result["result"]:
+            print result["result"]
+
 else:
     print 'ERROR, the args: %s' % args
 
