@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django import forms
 
 class DomainForm(forms.Form):
@@ -9,8 +11,4 @@ class DomainForm(forms.Form):
     soa_retry = forms.IntegerField(label=u'Retry time')
     soa_expire = forms.IntegerField(label=u'Expire time')
     soa_minimum = forms.IntegerField(label=u'Minimum time')
-
-    #def save(self):
-    #    domain = Domain()
-    #    return domain
 

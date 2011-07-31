@@ -9,6 +9,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+MANAGER_HOST = '192.168.1.204'
+MANAGER_PORT = '3333'
+
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
