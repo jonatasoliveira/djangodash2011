@@ -8,6 +8,14 @@ class pyManDNS_Zones(object):
         self.pyTables = pyTables
         self.dir_db_files = dir_db_files
 
+    def read_db_file(self,v_domain):
+        ''' Le arquivo de zona '''
+
+        file = open(self.dir_db_files + "/db." + v_domain, "r")
+        content = file.read()
+        file.close()
+        return content
+        
     def create_db_file(self,v_domain):
         ''' Cria arquivo DB File '''
     

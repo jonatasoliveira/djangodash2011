@@ -2,14 +2,14 @@
 # pyManDNS is a very easy script to Manage yout DNS
 #
 import sys
-sys.path.append('./libs');
+sys.path.append('./libs')
 import ConfigParser
 import os
 import re
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
-from sqlalchemy.sql.expression import select
+from sqlalchemy.sql.expression import select, delete, insert
 from SimpleXMLRPCServer import SimpleXMLRPCServer
-from pyManDNS_Tables import *
+from pyManDNS_Tables import pyManDNS_Cli_Domain
 from pyManDNS_Zones import pyManDNS_Zones
 from pyManDNS_ToAPI import pyManDNS_ToAPI
 
