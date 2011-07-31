@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Delete domain {{ domain_name }}</h1>
+
+    <form action="{% url domain_delete domain_name=domain_name %}" method="post">
+        {% csrf_token %}
+        <p>Confirm delete domain {{ domain_name }}?</p>
+        <p>
+            <input type="submit" class="submit" value="Delete" />
+        </p>
+    </form>
+
+{% endblock %}

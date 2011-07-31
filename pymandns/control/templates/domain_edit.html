@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h1>Edit domain {{ domain }}</h1>
+    <h1>Edit domain {{ domain.domain }}</h1>
 
-    <form action="{% url domain_create %}" method="post">
+    <form action="{% url domain_edit domain_name=domain.domain %}" method="post">
         {% csrf_token %}
         {{ domain_form.as_p }}
         <p>

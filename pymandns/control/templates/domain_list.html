@@ -11,7 +11,10 @@
         {% for domain in domains %}
         <tr>
             <td>{{ domain.domain }}</td>
-            <td>--</td>
+            <td>
+                <a href="{% url domain_edit domain_name=domain.domain %}">Edit</a>
+                <a href="{% url domain_delete domain_name=domain.domain %}">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     </table>
