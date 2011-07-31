@@ -22,7 +22,7 @@ class pyManDNS_Zones(object):
         # Recupera dados do SOA
         soa_table = self.pyTables.soa_table()
         soa_result = self.engine.execute(soa_table.select())
-        soa_row = soa_result.first();
+        soa_row = soa_result.first()
     
         zone_type_NS = ""
         zone_type_MX = ""

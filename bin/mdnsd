@@ -3,7 +3,7 @@
 #
 import sys
 import os
-sys.path.append(os.path.dirname(__file__) + '/../libs')
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../libs')
 import ConfigParser
 import re
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
@@ -15,7 +15,7 @@ from pyManDNS_ToAPI import pyManDNS_ToAPI
 
 # Parse config file
 config = ConfigParser.ConfigParser()
-config.read(os.path.dirname(__file__) + '/../etc/pyManDNS.cfg');
+config.read(os.path.dirname(os.path.realpath(__file__)) + '/../etc/pyManDNS.cfg');
 
 # Database connection
 db_engine = config.get('Database','db.engine')
@@ -63,5 +63,8 @@ server_port = config.get('Server','server.port')
 
 server = SimpleXMLRPCServer((server_host, int(server_port)), allow_none=True)
 server.register_instance(pyToAPI, True)
+
+print 'Server started'
+
 server.serve_forever()
 

@@ -80,3 +80,134 @@ class pyManDNS_Tables(object):
     def create(self):
     
         self.metadata.create_all(self.engine)
+
+        # Verifica se existe informacao de SOA
+        soa_table = self.soa_table()
+        soa_result = self.engine.execute(soa_table.select())
+        soa_row = soa_result.first()
+
+        if not soa_row:
+
+            self.engine.execute(soa_table.insert().values(
+                soa_ttl='14400',
+                soa_refresh='10800',
+                soa_retry='3600',
+                soa_expire='604800',
+                soa_minimum='38400'
+            ))
+
+        # Verifica se existe registro padrao
+        records_default_table = self.records_default_table()
+        records_default_result = self.engine.execute(records_default_table.select())
+        record_default_row = records_default_result.first()
+
+        if not record_default_row:
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='NS',
+                record_default_name='',
+                record_default_value='ns1.DOMAIN'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='NS',
+                record_default_name='',
+                record_default_value='ns2.DOMAIN'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='A',
+                record_default_name='ns1',
+                record_default_value='192.168.1.1'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='A',
+                record_default_name='ns2',
+                record_default_value='192.168.1.2'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='A',
+                record_default_name='',
+                record_default_value='127.0.0.1'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='CNAME',
+                record_default_name='www',
+                record_default_value='DOMAIN'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='CNAME',
+                record_default_name='mail',
+                record_default_value='ghs.google.com'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='CNAME',
+                record_default_name='docs',
+                record_default_value='ghs.google.com'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='CNAME',
+                record_default_name='calendar',
+                record_default_value='ghs.google.com'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='TXT',
+                record_default_name='',
+                record_default_value='v=spf1 a mx include:aspmx.googlemail.com ~all'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='aspmx.l.google.com',
+                record_default_priority='10'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='alt1.aspmx.l.google.com',
+                record_default_priority='20'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='alt2.aspmx.l.google.com',
+                record_default_priority='20'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='aspmx2.googlemail.com',
+                record_default_priority='30'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='aspmx3.googlemail.com',
+                record_default_priority='30'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='aspmx4.googlemail.com',
+                record_default_priority='30'
+            ))
+
+            self.engine.execute(records_default_table.insert().values(
+                record_default_type='MX',
+                record_default_name='',
+                record_default_value='aspmx5.googlemail.com',
+                record_default_priority='30'
+            ))
