@@ -73,11 +73,11 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         Get one domain, with all details,
         """
         try:
-            result = self.client.domain.get(domain=domain)
+            result = self.client.domain.get(domain)
         except socket.error, msg:
             return dict(type='error', message=msg)
 
-        return dict(type='success', message='', result=domain)
+        return dict(type='success', message='', result=result)
 
     def create(self, *args, **kwargs):
         """

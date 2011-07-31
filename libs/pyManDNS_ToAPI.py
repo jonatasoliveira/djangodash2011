@@ -32,7 +32,11 @@ class DomainWrapper(object):
             domains_table.select().where("domain=:domain"),domain=v_domain)
         domain_row = domains_result.first()
 
-        return domain_row
+        if domain_row:
+            return domain_row
+        else:
+            msg = "ERROR: Dominio not found"
+            return msg
 
     ''' Delete dominio '''
     def delete(self,v_domain):
