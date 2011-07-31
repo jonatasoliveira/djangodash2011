@@ -24,7 +24,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         # The XML-RPC doesn't accept named params. The keys are
         # to ordenate the params and use as **params.
         keys = ['domain', 'domain_active', 'soa_ttl', 'soa_serial',
-                'soa_refresh_seconds', 'soa_retry', 'soa_expire',
+                'soa_refresh', 'soa_retry', 'soa_expire',
                 'soa_minimum', 'group_id', 'domain_linked', 'domain_copy']
 
         return [kwargs[k] for k in keys if k in kwargs]
@@ -83,7 +83,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         @param domain_active
         @param soa_ttl
         @param soa_serial
-        @param soa_refresh_seconds
+        @param soa_refresh
         @param soa_retry
         @param soa_expire
         @param soa_minimum
@@ -106,7 +106,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         @param domain_active
         @param soa_ttl
         @param soa_serial
-        @param soa_refresh_seconds
+        @param soa_refresh
         @param soa_retry
         @param soa_expire
         @param soa_minimum
