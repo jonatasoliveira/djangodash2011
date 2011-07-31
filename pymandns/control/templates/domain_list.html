@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Domains list</h1>
+
+    <table>
+        <tr>
+            <th>Domain</th>
+            <th>Actions</th>
+        </tr>
+        {% for domain in domains %}
+        <tr>
+            <td>{{ domain.domain }}</td>
+            <td>--</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
