@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Edit domain {{ domain }}</h1>
+
+    <form action="{% url domain_create %}" method="post">
+        {% csrf_token %}
+        {{ domain_form.as_p }}
+        <p>
+            <input type="submit" class="submit" value="Save" />
+        </p>
+    </form>
+
+{% endblock %}

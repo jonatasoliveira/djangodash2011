@@ -56,31 +56,34 @@ def domain_create(request):
         context_instance=RequestContext(request))
 
 
-#def domain_edit(request):
-#    if request.method == 'POST':
-#        domain_form = DomainForm(request.POST)
-#        if domain_form.is_valid():
-#            try:
-#                domain_client = _get_client()
-#                result = domain_client.create(**domain_form.cleaned_data)
-#
-#                if result['type'] == 'success':
-#                    messages.success(request,
-#                        u'The domain %s was created.' % domain_form.cleaned_data['domain'])
-#                    return redirect('dashboard')
-#                elif result['type'] == 'error':
-#                    messages.error(request, result['message'])
-#
-#            except Exception, e:
-#                messages.error(request, u'>>> ERROR: %s' % e)
-#    else:
-#        try:
-#            domain_client = _get_client()
-#            result = domain_client.show(**domain_form.cleaned_data)
-#        except Exception, e:
-#            messages.error(request, u'>>> ERROR: %s' % e)
-#        domain_form = DomainForm(initial=)
-#
-#    return render_to_response('domain_create.html', locals(),
-#        context_instance=RequestContext(request))
+def domain_edit(request, domain_name):
+    if request.method == 'POST':
+        domain_form = DomainForm(request.POST)
+        if domain_form.is_valid():
+            try:
+                domain_client = _get_client()
+                result = domain_client.create(**domain_form.cleaned_data)
+
+                if result['type'] == 'success':
+                    messages.success(request,
+                        u'The domain %s was created.' % domain_form.cleaned_data['domain'])
+                    return redirect('dashboard')
+                elif result['type'] == 'error':
+                    messages.error(request, result['message'])
+
+            except Exception, e:
+                messages.error(request, u'>>> ERROR: %s' % e)
+    else:
+        try:
+            domain_client = _get_client()
+            result = domain_client.get(domain_name)
+            print result
+        except Exception, e:
+            messages.error(request, u'>>> ERROR: %s' % e)
+        #domain_form = DomainForm(initial=)
+
+    return render_to_response('domain_edit.html', locals(),
+        context_instance=RequestContext(request))
+
+
 
