@@ -5,28 +5,14 @@
 
     <form action="{% url domain_edit domain_name=domain.domain %}" method="post">
         {% csrf_token %}
-        {{ domain_form.as_p }}
 
-        <h2>Records</h2>
-        <p>
-            Type:
-            <select name="record_type">
-                <option value="A" selected="">A</option>
-                <option value="CNAME">CNAME</option>
-                <option value="MX">MX</option>
-                <option value="TXT">TXT</option>
-            </select><br/>
-            Name:
-            <input type="text" name="record_name" /> .{{ domain.domain }}<br/>
-            Address:
-            <input type="text" name="record_address" /><br/>
-            Priority:
-            <input type="text" name="record_priority" /><br/>
-        </p>
+        {{ domain_form.as_p }}
 
         <p>
             <input type="submit" class="submit" value="Save" />
         </p>
+
+        <pre>{{ zone }}</pre>
     </form>
 
 {% endblock %}

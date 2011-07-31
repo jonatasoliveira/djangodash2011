@@ -60,6 +60,10 @@ def domain_edit(request, domain_name):
         domain_client = _get_client()
         result = domain_client.get(domain_name)
         domain = result['result']
+
+        result_zone = domain_client.show(domain=domain_name)
+        zone = result_zone["message"]
+
     except Exception, e:
         messages.error(request, u'>>> ERROR: %s' % e)
 
