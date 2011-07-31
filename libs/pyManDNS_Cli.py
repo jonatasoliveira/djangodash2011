@@ -1,3 +1,6 @@
+import xmlrpclib
+import socket
+
 class ConnectXMLRPC(object):
 
     def __init__(self, host=None, port=None):
