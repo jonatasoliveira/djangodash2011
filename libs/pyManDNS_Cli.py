@@ -37,7 +37,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
 
         try:
             result = self.client.domain.show(kwargs["domain"])
-            return dict(type='success', message='', result=result)
+            return result
         except socket.error, msg:
             return dict(type='error', message=msg)
 
@@ -50,7 +50,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
 
         try:
             result = self.client.domain.delete(kwargs["domain"])
-            return dict(type='success', message='', result=result)
+            return result
         except socket.error, msg:
             return dict(type='error', message=msg)
 
@@ -59,14 +59,10 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         List all domains,
         """
         try:
-            domains = self.client.domain.list()
+            result = self.client.domain.list()
+            return result
         except socket.error, msg:
             return dict(type='error', message=msg)
-
-        if limit:
-            domains = domains[:limit]
-
-        return dict(type='success', message='', result=domains)
 
     def get(self, domain):
         """
@@ -74,10 +70,9 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         """
         try:
             result = self.client.domain.get(domain)
+            return result
         except socket.error, msg:
             return dict(type='error', message=msg)
-
-        return dict(type='success', message='', result=result)
 
     def create(self, *args, **kwargs):
         """
@@ -98,7 +93,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         try:
             params = self._kwargs_to_args_ordenated(**kwargs)
             result = self.client.domain.create(*params)
-            return dict(type='success', message='', result=result)
+            return result
         except socket.error, msg:
             return dict(type='error', message=msg)
 
@@ -121,7 +116,7 @@ class pyManDNS_Cli_Domain(ConnectXMLRPC):
         try:
             params = self._kwargs_to_args_ordenated(**kwargs)
             result = self.client.domain.update(*params)
-            return dict(type='success', message='', result=result)
+            return result
         except socket.error, msg:
             return dict(type='error', message=msg)
 

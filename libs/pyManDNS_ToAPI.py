@@ -1,5 +1,13 @@
 import re
 
+
+def success(msg=None, result=None):
+    return dict(type='success', message=msg, result=result)
+
+def error(msg=None, result=None):
+    return dict(type='error', message=msg, result=result)
+
+
 class DomainWrapper(object):
     """
     This class is used to separate the entities namespaces in the XML-RPC server.
@@ -20,7 +28,7 @@ class DomainWrapper(object):
 
         msg = self.pyZones.read_db_file(v_domain)
         
-        return msg
+        return success(msg=msg)
 
     ''' Get dominio '''
     def get(self,v_domain):
@@ -33,10 +41,11 @@ class DomainWrapper(object):
         domain_row = domains_result.first()
 
         if domain_row:
-            return domain_row
+            # return domain_row
+            return success(result=domain_row)
         else:
             msg = "ERROR: Dominio not found"
-            return msg
+            return error(msg=msg)
 
     ''' Delete dominio '''
     def delete(self,v_domain):
@@ -64,11 +73,11 @@ class DomainWrapper(object):
             self.pyZones.create_zone_file(1)
             self.pyZones.reload()
 
-            return msg
+            return success(msg=msg)
 
         else:
             msg = "ERROR: Dominio not found"
-            return msg
+            return error(msg=msg)
 
     ''' Lista dominios '''
     def list(self):
@@ -81,7 +90,7 @@ class DomainWrapper(object):
         for domain_row in domains_result:
             domains.append({ 'domain_id': domain_row.domain_id, 'domain': domain_row.domain })
 
-        return domains
+        return success(result=domains)
 
     ''' Grava dominios '''
     def create(self, v_domain, v_domain_active=True, v_soa_ttl=None, v_soa_serial=None,
@@ -100,7 +109,7 @@ class DomainWrapper(object):
         ''' Nao pode ser feito link e copia ao mesmo tempo '''
         if v_domain_linked and v_domain_copy:
             msg = "ERROR: Nao pode ser feito link e copia ao mesmo tempo"
-            return msg
+            return error(msg=msg)
 
         ''' Verifica se dominio ja existe '''
         domains_result = self.engine.execute(
@@ -109,7 +118,7 @@ class DomainWrapper(object):
 
         if domain_row:
             msg = "ERROR: Dominio ja existe..."
-            return msg
+            return error(msg=msg)
 
         ''' Tratamento de v_domain_copy '''
         v_domain_copy_id = None;
@@ -124,7 +133,7 @@ class DomainWrapper(object):
                 v_domain_copy_id = domain_copy_row.domain_id;
             else:
                 msg = "ERROR: Dominio origem para copia not found..."
-                return msg
+                return error(msg=msg)
 
         ''' Tratamento de v_domain_linked '''
         v_domain_linked_id = None;
@@ -139,7 +148,7 @@ class DomainWrapper(object):
                 v_domain_linked_id = domain_linked_row.domain_id;
             else:
                 msg = "Dominio origem para link not found..."
-                return msg
+                return error(msg=msg)
 
         ''' Adiciona dominio '''
         insert = self.engine.execute(domains_table.insert().values(
@@ -202,7 +211,7 @@ class DomainWrapper(object):
         msg  = "SUCCESS: Dominio " + v_domain + " adicionado.\n\n"
         msg += self.pyZones.read_db_file(v_domain)
         
-        return msg
+        return success(msg=msg)
 
     ''' Atualiza dominio '''
     def update(self, v_domain, v_domain_active=True, v_soa_ttl=None, v_soa_serial=None,
@@ -221,7 +230,7 @@ class DomainWrapper(object):
 
         if domain_row == "":
             msg = "ERROR: Dominio nao existe..."
-            return msg
+            return error(msg=msg)
 
         ''' Tratamento de v_domain_linked '''
         v_domain_linked_id = None;
@@ -236,7 +245,7 @@ class DomainWrapper(object):
                 v_domain_linked_id = domain_linked_row.domain_id;
             else:
                 msg = "Dominio origem para link not found..."
-                return msg
+                return error(msg=msg)
 
         ''' Adiciona dominio '''
         insert = self.engine.execute(domains_table.update().values(
@@ -252,7 +261,7 @@ class DomainWrapper(object):
             soa_minimum=v_soa_minimum
         ).where("domain_id=:b_domain_id"),b_domain_id=domain_row.domain_id)
 
-        return "ok..."
+        return success(msg='ok')
 
 #        ''' Recupera ultimo ID adicionado '''
 #        last_insert_id = insert.lastrowid
@@ -313,3 +322,5 @@ class pyManDNS_ToAPI(object):
 
     def startDomainWrapper(self):
         self.domain = DomainWrapper(self.engine,self.pyTables,self.pyZones)
+
+
