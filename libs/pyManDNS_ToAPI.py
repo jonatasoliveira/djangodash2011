@@ -7,6 +7,9 @@ def success(msg=None, result=None):
 def error(msg=None, result=None):
     return dict(type='error', message=msg, result=result)
 
+def serialize(row):
+    return dict(row.items())
+
 
 class DomainWrapper(object):
     """
@@ -42,7 +45,7 @@ class DomainWrapper(object):
 
         if domain_row:
             # return domain_row
-            return success(result=domain_row)
+            return success(result=serialize(domain_row))
         else:
             msg = "ERROR: Dominio not found"
             return error(msg=msg)
@@ -88,7 +91,7 @@ class DomainWrapper(object):
         domains_result = self.engine.execute(domains_table.select())
 
         for domain_row in domains_result:
-            domains.append({ 'domain_id': domain_row.domain_id, 'domain': domain_row.domain })
+            domains.append(serialize(domain_row))
 
         return success(result=domains)
 
