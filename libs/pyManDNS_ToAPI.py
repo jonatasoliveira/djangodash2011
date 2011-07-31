@@ -88,6 +88,10 @@ class DomainWrapper(object):
                v_soa_refresh=None, v_soa_retry=None, v_soa_expire=None,
                v_soa_minimum=None, v_group_id=None, v_domain_linked=None, v_domain_copy=None):
 
+        ''' Dados padrao '''
+        if not v_soa_serial:
+            v_soa_serial = 1
+
         ''' Instancia tabelas '''
         domains_table = self.pyTables.domains_table()
         records_table = self.pyTables.records_table()
