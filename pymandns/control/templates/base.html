@@ -5,19 +5,28 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>PyManDNS</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js" type="text/javascript"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js" djConfig="parseOnLoad: true"></script>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/resources/dojo.css">
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/claro.css">
+
+    <script type="text/javascript">
+        dojo.require("dijit.form.Button");
+    </script>
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
     {% block headtags %}{% endblock %}
 </head>
 
-<body>
+<body class="claro">
     <div id="site">
         <div id="header">
             <h1>PyManDNS - Realtime Master and Slaves</h1>
-            <ul id="menu">
-                <li><a href="{% url domain_list %}">List domains</a></li>
-                <li><a href="{% url domain_create %}">Create domain</a></li>
-            </ul>
         </div>
+        <ul id="menu">
+            <li><a href="{% url domain_list %}">List domains</a></li>
+            <li><a href="{% url domain_create %}">Create domain</a></li>
+        </ul>
         <div id="content">
             {% for message in messages %}
             <div class="message {{ message.tags }}">
@@ -27,7 +36,7 @@
             {% block content %}{% endblock %}
         </div>
         <div id="footer">
-            <p>Django Dash 2011 Project.</p>
+            <p>Django Dash 2011 Project - <a href="http://djangodash.com/teams/c2/integrado/">Integrado</a> team (<a href="http://github.com/jonatasoliveira">Jonatas Oliveira</a> and <a href="http://github.com/unattis">Udlei Nattis</a>).</p>
         </div>
 </body>
 </html>

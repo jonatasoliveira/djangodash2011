@@ -12,8 +12,25 @@
         <tr>
             <td>{{ domain.domain }}</td>
             <td>
-                <a href="{% url domain_edit domain_name=domain.domain %}">Edit</a>
-                <a href="{% url domain_delete domain_name=domain.domain %}">Delete</a>
+
+            <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconWikiword" type="button">
+            Edit
+            
+            <script type="dojo/method" event="onClick" args="evt">
+                location = "{% url domain_edit domain_name=domain.domain %}"
+            </script>
+
+            </button>
+
+            <button dojoType="dijit.form.Button" iconClass="dijitEditorIcon dijitEditorIconDelete" type="button">
+            Delete
+            
+            <script type="dojo/method" event="onClick" args="evt">
+                location = "{% url domain_delete domain_name=domain.domain %}"
+            </script>
+
+            </button>
+
             </td>
         </tr>
         {% endfor %}

@@ -15,9 +15,8 @@ def _get_client():
     return domain_client
 
 
-def dashboard(request):
-    return render_to_response('dashboard.html', locals(),
-        context_instance=RequestContext(request))
+def index(request):
+    return redirect('domain_list')
 
 
 def domain_list(request):
