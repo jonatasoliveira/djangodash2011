@@ -3,11 +3,12 @@ import os
 
 class pyManDNS_Zones(object): 
 
-    def __init__(self,engine,pyTables):
+    def __init__(self,engine,pyTables,dir_db_files):
         self.engine = engine
         self.pyTables = pyTables
+        self.dir_db_files = dir_db_files
 
-    def create_db_file(self,dir_db_files,v_domain):
+    def create_db_file(self,v_domain):
         ''' Cria arquivo DB File '''
     
         # Recupera dados do SOA
@@ -96,12 +97,12 @@ class pyManDNS_Zones(object):
         zone += zone_type_CNAME
         zone += zone_type_TXT
     
-        file = open(dir_db_files + "/db." + domain_row.domain, "w")
+        file = open(self.dir_db_files + "/db." + domain_row.domain, "w")
         file.write(zone)
         file.close()
     
     ''' Cria arquivo apontando as zonas '''
-    def create_zone_file(self,dir_db_files,verbose):
+    def create_zone_file(self,verbose):
     
         domains_table = self.pyTables.domains_table()
         domains_result = self.engine.execute(domains_table.select())
@@ -109,7 +110,7 @@ class pyManDNS_Zones(object):
         zones = ""
     
         for domain_row in domains_result:
-            file = dir_db_files + "/db." + domain_row.domain;
+            file = self.dir_db_files + "/db." + domain_row.domain;
             cmd = "/usr/sbin/named-checkzone -q " + domain_row.domain + " " + file
             result = os.system(cmd)
     
@@ -125,7 +126,7 @@ class pyManDNS_Zones(object):
     
                 zones += "zone \"" + domain_row.domain + "\" {\n"
                 zones += "\ttype master;\n"
-                zones += "\tfile \"" + dir_db_files + "/db." + domain_row.domain + "\";\n"
+                zones += "\tfile \"" + self.dir_db_files + "/db." + domain_row.domain + "\";\n"
                 zones += "};\n\n"
     
         file = open("/var/named/chroot/etc/named.pyManDNS.zones", "w")

@@ -12,9 +12,10 @@ class DomainWrapper(object):
 
     domains = []
 
-    def __init__(self,engine,pyTables):
+    def __init__(self,engine,pyTables,pyZones):
         self.engine = engine
         self.pyTables = pyTables
+        self.pyZones = pyZones
 
     ''' Lista dominios '''
     def list(self):
@@ -96,7 +97,7 @@ class DomainWrapper(object):
         ))
 
         ''' Recupera ultimo ID adicionado '''
-        last_insert_id = insert.inserted_primary_key
+        last_insert_id = insert.lastrowid
 
         if v_domain_copy_id:
             ''' Verifica se deve ser feito copia '''
@@ -111,7 +112,7 @@ class DomainWrapper(object):
 
                 ''' Grava registros recuperados '''
                 self.engine.execute(records_table.insert().values(
-                    domain_id=last_insert_id[0],
+                    domain_id=last_insert_id,
                     record_type=record_row.record_type,
                     record_name=record_row.record_name,
                     record_value=record_value,
@@ -128,25 +129,28 @@ class DomainWrapper(object):
 
                 ''' Grava registros recuperados '''
                 self.engine.execute(records_table.insert().values(
-                    domain_id=last_insert_id[0],
+                    domain_id=last_insert_id,
                     record_type=record_default_row.record_default_type,
                     record_name=record_default_row.record_default_name,
                     record_value=record_default_value,
                     record_priority=record_default_row.record_default_priority
                 ))
 
+        self.pyZones.create_db_file(v_domain)
+        self.pyZones.create_zone_file(1);
+        self.pyZones.reload()
+
 class pyManDNS_ToAPI(object):
 
-    def __init__(self,engine,pyTables):
+    def __init__(self,engine,pyTables,pyZones):
         self.engine = engine
         self.pyTables = pyTables
+        self.pyZones = pyZones
 
     def startDomainWrapper(self):
-        self.domain = DomainWrapper(self.engine,self.pyTables)
+        self.domain = DomainWrapper(self.engine,self.pyTables,self.pyZones)
 
 #    teste = DomainWrapper()
 #    teste.setEngine(engine)
 #    teste.setTables(pyTables)
 #    teste.list()
-
-    print 'abc'
