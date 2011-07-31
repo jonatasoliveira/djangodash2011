@@ -4,20 +4,9 @@ import argparse
 import xmlrpclib
 import socket
 import sys
-sys.path.append('./libs')
+import os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../libs')
 from pyManDNS_Cli import *
-
-def show(msg, prefix='INFO: ', exit=False):
-    print '%s%s' % (prefix, msg)
-    if exit:
-        import sys
-        sys.exit()
-
-def show_error(msg, exit=False):
-    show(msg, 'ERROR: ', exit)
-
-def show_message(msg, exit=False):
-    show(msg, 'MESSAGE: ', exit)
 
 parser = argparse.ArgumentParser()
 
@@ -81,3 +70,4 @@ if args.cls == 'domain':
     method(**kwargs)
 else:
     print 'ERROR, the args: %s' % args
+

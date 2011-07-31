@@ -1,21 +1,21 @@
-#
+#!/usr/bin/python
 # pyManDNS is a very easy script to Manage yout DNS
 #
 import sys
-sys.path.append('./libs')
-import ConfigParser
 import os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../libs')
+import ConfigParser
 import re
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.sql.expression import select, delete, insert
 from SimpleXMLRPCServer import SimpleXMLRPCServer
-from pyManDNS_Tables import pyManDNS_Cli_Domain
+from pyManDNS_Tables import *
 from pyManDNS_Zones import pyManDNS_Zones
 from pyManDNS_ToAPI import pyManDNS_ToAPI
 
 # Parse config file
 config = ConfigParser.ConfigParser()
-config.read('./config.cfg');
+config.read(os.path.dirname(os.path.realpath(__file__)) + '/../etc/pyManDNS.cfg');
 
 # Database connection
 db_engine = config.get('Database','db.engine')
@@ -63,4 +63,8 @@ server_port = config.get('Server','server.port')
 
 server = SimpleXMLRPCServer((server_host, int(server_port)), allow_none=True)
 server.register_instance(pyToAPI, True)
+
+print 'Server started'
+
 server.serve_forever()
+
