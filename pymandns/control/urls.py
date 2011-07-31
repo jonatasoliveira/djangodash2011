@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('',
+urlpatterns = patterns('control.views',
     # Example:
-    (r'^/?$', 'index', name='index'),
+    url(r'^/?$', 'dashboard', name='dashboard'),
 )
