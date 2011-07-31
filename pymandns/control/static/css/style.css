@@ -83,3 +83,24 @@ body {
     font-weight: bold;
     color: #1d669d;
 }
+
+.message {
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #DDD;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.message p {
+margin: 0;
+}
+.message.success {
+    background: #dbfce2 url('../imgs/success.gif') 10px center no-repeat;
+    border-color: #008f0d;
+    color: #004506;
+}
+.message.error {
+    background: #fcdbdb url('../imgs/error.gif') 10px center no-repeat;
+    border-color: #961818;
+    color: #550101;
+}
